@@ -51,8 +51,8 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
 
     Sensor accelerometer;
     Sensor magneticField;
-    Button alphaButton;
-    Button bettaButton;
+
+    private int taskCounter = 0;
 
 
     @Override
@@ -79,8 +79,6 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
         alphaView  = (TextView)findViewById(R.id.alphaValue);
         bettaView  = (TextView)findViewById(R.id.bettaValue);
 
-        alphaButton= (Button)findViewById(R.id.buttonAlpha);
-        bettaButton= (Button)findViewById(R.id.buttonBetta);
 
         dialog.show(getFragmentManager(),"Налаштування");
 
@@ -129,7 +127,13 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.layer:
+
+                if(taskCounter <= 2) {
                 atask.stopTask();
+                taskCounter++;
+                    atask = new AngleTask();
+                    atask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, 2.0);
+                }
                 break;
             case R.id.buttonChange:
                 dialog.show(getFragmentManager(), "Налаштування");
@@ -138,16 +142,6 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
             case R.id.buttonUpdate:
                 resetActivity();
                 startTask();
-                break;
-            case R.id.buttonAlpha:
-                atask = new AngleTask();
-                atask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, 1.0);
-                alphaButton.setEnabled(false);
-                break;
-            case R.id.buttonBetta:
-                atask = new AngleTask();
-                atask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, 2.0);
-                bettaButton.setEnabled(false);
                 break;
         }
     }
@@ -357,8 +351,7 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
         heightView.setText("00.00");
         alpha = 0;
         betta = 0;
-        bettaButton.setEnabled(true);
-        alphaButton.setEnabled(true);
+        taskCounter=1;
 
     }
 
