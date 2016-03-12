@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -22,14 +21,13 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.grass.metering2.validation.Constants;
 import com.example.grass.metering2.validation.MyValidator;
 import com.example.grass.metering2.validation.ValidationCallback;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import com.example.grass.metering2.validation.Constants.*;
+import static com.example.grass.metering2.Constants.*;
 
 public class MeteringActivity extends Activity implements View.OnClickListener, SensorEventListener,
         ValidationCallback{
@@ -59,11 +57,6 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!checkDate()){
-            MyValidator val = new MyValidator(getApplicationContext(),this);
-            val.execute();
-        }
-
         setContentView(R.layout.activity_metering);
         dialog = new MeteringDialog();
         dialog.setMeteringActivity(this);
@@ -83,37 +76,29 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
         bettaButton= (Button)findViewById(R.id.buttonBetta);
 
         dialog.show(getFragmentManager(),"Налаштування");
+        checkDate();
 
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-    boolean  checkDate(){
+    boolean checkDate(){
 
-        long installed = 0;
-        try {
-            installed = this.getPackageManager().getPackageInfo(this.getPackageName(),0).firstInstallTime;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        long diff = Calendar.getInstance().getTimeInMillis() - installed;
-        long days = diff/(24*60*60*1000);
+        SharedPreferences preferences = getSharedPreferences("my_settings" , MODE_PRIVATE);
 
-        Calendar dayD = Calendar.getInstance();
-        dayD.set(Calendar.DAY_OF_MONTH,15);
-        dayD.set(Calendar.MONTH, 7);
-        dayD.set(Calendar.YEAR, 2016);
+        long timeX = preferences.getLong("dayD",0) - Calendar.getInstance().getTimeInMillis();
 
-        long dayDdiff = Calendar.getInstance().getTimeInMillis() - dayD.getTimeInMillis();
-        long daysD = dayDdiff/(24*60*60*100);
-
-
-        if (days<30&&dayDdiff<0){
-
+        Log.d(TAG, "checkDateDiff: " + " timeX" + timeX/(24*60*60*1000));
+        if (timeX > 0 ){
+            Log.d(TAG, "checkDate() returned: " + true);
             return true;
+
         }
         else {
-            return preferences.getBoolean(Constants.VAL, false);
+            Log.d(TAG, "checkDate() returned: " + false);
+            MyValidator val = new MyValidator(getApplicationContext(),this);
+            val.execute();
+            return preferences.getBoolean(VAL, false);
         }
 
     }
@@ -212,6 +197,7 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
     public void valid(Boolean valid) {
 
         if (valid){
+            SharedPreferences preferences = getSharedPreferences("my_settings" , MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean(Constants.VAL,true);
             editor.apply();
