@@ -41,16 +41,13 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
     TextView alphaView;
     TextView bettaView;
 
-    MeteringTask mtask;
+    //MeteringTask mtask;
     AngleTask    atask;
-
-    private double alpha;
-    private double betta;
 
     Sensor accelerometer;
     Sensor magneticField;
 
-    private int taskCounter = 0;
+    private int taskCounter = 1;
 
 
     @Override
@@ -73,11 +70,12 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
         bettaView  = (TextView)findViewById(R.id.bettaValue);
 
 
-        dialog.show(getFragmentManager(),"Налаштування");
+        dialog.show(getFragmentManager(), "Налаштування");
         checkDate();
 
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        resetActivity();
     }
 
     boolean checkDate(){
@@ -104,21 +102,18 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
     @Override
     protected void onResume() {
         super.onResume();
+        resetActivity();
 
-        startTask();
+        //startTask();
 
     }
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.layer:
-
-                if(taskCounter <= 2) {
-                atask.stopTask();
                 taskCounter++;
-                    atask = new AngleTask();
-                    atask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, 2.0);
-                }
+                if(taskCounter==3)
+                    atask.stopTask();
                 break;
             case R.id.buttonChange:
                 dialog.show(getFragmentManager(), "Налаштування");
@@ -126,7 +121,7 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
                 break;
             case R.id.buttonUpdate:
                 resetActivity();
-                startTask();
+               // startTask();
                 break;
         }
     }
@@ -238,17 +233,21 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
     public class AngleTask extends AsyncTask<Double,String,Double>{
 
         private boolean runFlag =true;
-        private double num;
+        private double num = 0;
+
+        private double alpha = -1;
+        private double betta = -1;
 
         public void stopTask(){
             runFlag = false;
         }
+
+
         @Override
         protected Double doInBackground(Double... params) {
-            num = params[0];
             double angle = 0.0;
             ArrayList<Double> angles = new ArrayList<>();
-            while (runFlag) {
+            while (taskCounter!=3) {
                 try {
                     new Thread().sleep(100);
                 } catch (InterruptedException e) {
@@ -257,9 +256,9 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
                 float[] values = getOrientation();
                 if (checkRotate(values[2])) {
                     angle = values[1];
-                    if(num==1&&values[1] > 0)
+                    if(taskCounter==1&&values[1] < 0)
                         angle = 0;
-                    if(num==2&&values[1] < 0)
+                    if(taskCounter==2&&values[1] > 0)
                         angle = 0;
                     angles.add(Math.abs(roundNumber(angle, 2)));
 
@@ -270,15 +269,17 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
                 }
                 publishProgress("" + Math.abs(roundNumber(angle, 2)));
             }
-            return Math.abs(roundNumber(angle,2));
+            return 3.0;
         }
         protected void onProgressUpdate(String... data) {
-            switch ((int)num){
+            switch ((int)taskCounter){
                 case 1:
                     alphaView.setText(data[0]);
+                    alpha = Double.parseDouble(data[0]);
                     break;
                 case 2:
                     bettaView.setText(data[0]);
+                    betta = Double.parseDouble(data[0]);
                     break;
             }
         }
@@ -286,59 +287,20 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
         @Override
         protected void onPostExecute(Double value) {
             super.onPostExecute(value);
-            switch ((int)num){
-                case 1:
-                    alphaView.setText(""+value);
-                    alpha = value;
-                    break;
-                case 2:
-                    bettaView.setText(""+value);
-                    betta = value;
-                    break;
+            if(alpha>=0&&betta>=0) {
+                double height = calculateHeight(alpha, betta, dialog.getParams());
+                heightView.setText("" + roundNumber(height, 2));
             }
         }
     }
-
-    public class MeteringTask extends AsyncTask<Void,Double,Double>{
-        private boolean runFlag =true;
-        @Override
-        protected Double doInBackground(Void... params) {
-            Log.d("ran","ran");
-            double height = 0.0;
-            while (runFlag){
-                try {
-                    new Thread().sleep(300);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if(alpha>0.0 && betta>0.0 ){
-                    runFlag = false;
-                    height  = calculateHeight(alpha,betta,dialog.getParams());
-                }
-            }
-            return roundNumber(height,2);
-        }
-
-        @Override
-        protected void onPostExecute(Double aDouble) {
-            super.onPostExecute(aDouble);
-            heightView.setText(""+aDouble);
-        }
-    }
-
-    public void startTask(){
-        mtask= new MeteringTask();
-        mtask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }
-
     public void resetActivity(){
         alphaView.setText("00.00");
         bettaView.setText("00.00");
         heightView.setText("00.00");
-        alpha = 0;
-        betta = 0;
         taskCounter=1;
 
+        atask = new AngleTask();
+        atask.execute(1.0);
     }
 
     private double calculateHeight(double alpha,double betta, double a){

@@ -36,11 +36,11 @@ public class MyValidation {
         FileOutputStream outStream = null;
         StringBuilder text = null;
         try {
-            Log.d(TAG, "isValid: " + clientV2.getAccountInfo().email);
+          //  Log.d(TAG, "isValid: " + clientV2.getAccountInfo().email);
 
             outStream = new FileOutputStream(context.getFilesDir() + "/licenVisBesBas.txt");
             DbxEntry.File downloadFile = clientV2.getFile("/licenVisBesBas.txt",null, outStream);
-            Log.d(TAG, "isValid: file " + downloadFile.asFile().toString());
+        //    Log.d(TAG, "isValid: file " + downloadFile.asFile().toString());
             outStream.close();
 
             text = new StringBuilder();
@@ -53,9 +53,9 @@ public class MyValidation {
             }
             br.close();
 
-            Log.d(TAG, "isValid: chek " + text.toString().contains(imei));
+//            Log.d(TAG, "isValid: chek " + text.toString().contains(imei));
             if (text.toString().contains(imei)){
-                Log.d(TAG, "isValid: works");
+         //       Log.d(TAG, "isValid: works");
                 Calendar dayD = Calendar.getInstance();
                 dayD.add(Calendar.DATE,365);
                 SharedPreferences.Editor editor = preferences.edit();

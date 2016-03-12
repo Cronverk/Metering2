@@ -120,6 +120,7 @@ public class MeteringDialog extends DialogFragment implements View.OnClickListen
         if(height>0) {
             saveData(Float.valueOf("" + height));
             this.height = height;
+            activity.resetActivity();
             dialog.dismiss();
         }
         else
