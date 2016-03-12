@@ -166,7 +166,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="СТАРТ"
+        android:text="Старт"
         android:id="@+id/buttonBetta"
         android:layout_alignTop="@+id/textView7"
         android:layout_alignLeft="@+id/buttonAlpha"

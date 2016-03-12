@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -93,7 +92,7 @@ public class MeteringDialog extends DialogFragment implements View.OnClickListen
         if (mSettings.getAll().size() ==0 )
             return null;
         Map map = mSettings.getAll();
-        height  = new Double(""+map.get("height"));
+        height  = Double.valueOf(""+map.get("height"));
 
         HashMap<String,Double> data = null;
         if(height != 0 ) {
@@ -119,13 +118,13 @@ public class MeteringDialog extends DialogFragment implements View.OnClickListen
 
         }
         if(height>0) {
-            saveData(new Float("" + height));
+            saveData(Float.valueOf("" + height));
             this.height = height;
             dialog.dismiss();
         }
         else
             Toast.makeText(activity.getApplicationContext(),
-                    "Значення має бути більше нуля ",Toast.LENGTH_LONG);
+                    "Значення має бути більше нуля ",Toast.LENGTH_LONG).show();
     }
 
     public double getParams(){
