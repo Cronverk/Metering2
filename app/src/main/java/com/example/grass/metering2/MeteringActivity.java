@@ -11,6 +11,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,22 +20,25 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.grass.metering2.validation.MyValidator;
 import com.example.grass.metering2.validation.ValidationCallback;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import static com.example.grass.metering2.Constants.*;
 
 public class MeteringActivity extends Activity implements View.OnClickListener, SensorEventListener,
-        ValidationCallback{
+        ValidationCallback,SoundPool.OnLoadCompleteListener {
     MeteringDialog dialog;
     SensorManager sensorManager;
     SharedPreferences preferences;
+
+    SoundPool sp;
+    int sound;
 
     private float[] accelerometerValues;
     private float[] magneticFieldValues;
@@ -54,9 +59,17 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_metering);
+        setContentView(R.layout.activity_metering2);
         dialog = new MeteringDialog();
         dialog.setMeteringActivity(this);
+
+        sp = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+        sp.setOnLoadCompleteListener(this);
+        try {
+            sound = sp.load(getAssets().openFd("1897.ogg"), 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE); // Получаем менеджер сенсоров
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -71,7 +84,7 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
 
 
         dialog.show(getFragmentManager(), "Налаштування");
-        checkDate();
+        //checkDate();
 
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -114,6 +127,8 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
                 taskCounter++;
                 if(taskCounter==3)
                     atask.stopTask();
+                if(taskCounter<=3)
+                    sp.play(sound, 1, 1, 0, 0, 1);
                 break;
             case R.id.buttonChange:
                 dialog.show(getFragmentManager(), "Налаштування");
@@ -229,6 +244,11 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
         dialog.show();
     }
 
+    @Override
+    public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+
+    }
+
 
     public class AngleTask extends AsyncTask<Double,String,Double>{
 
@@ -287,8 +307,11 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
         @Override
         protected void onPostExecute(Double value) {
             super.onPostExecute(value);
+
             if(alpha>=0&&betta>=0) {
-                double height = calculateHeight(alpha, betta, dialog.getParams());
+                double height = 0;
+                if(alpha!=0 && betta !=0)
+                    height = calculateHeight(alpha, betta, dialog.getParams());
                 heightView.setText("" + roundNumber(height, 2));
             }
         }
