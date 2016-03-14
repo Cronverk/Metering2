@@ -157,7 +157,7 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
 
     public float[] getOrientation(){
         float[] values = new float[3];
-
+/*
         if(magneticFieldValues !=null) {
             float[] R = new float[9];
             SensorManager.getRotationMatrix(R, null, accelerometerValues, magneticFieldValues);
@@ -167,7 +167,7 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
             values[1] = (float) Math.toDegrees(values[1]);
             values[2] = (float) Math.toDegrees(values[2]);
             Log.d("orientation","orientation 1 "+ values[0]+" " +values[1]+ " " + values[2]);
-        }else {
+        }else {*/
             if(accelerometerValues!=null) {
                 double ax = accelerometerValues[0];
                 double ay = accelerometerValues[1];
@@ -182,7 +182,7 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
                 values[2] = (float) Math.toDegrees(z) - 90;
             }else values = new float[]{0,0,0};
             Log.d("orientation","orientation 2 "+ values[0]+" " +values[1]+ " " + values[2]);
-        }
+      //  }
         return values;
     }
     public boolean checkRotate(float angle){
@@ -277,9 +277,9 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
                 float[] values = getOrientation();
                 if (checkRotate(values[2])) {
                     angle = values[1];
-                    if(taskCounter==1&&values[0]*values[1] < 0)
+                    if(taskCounter==1&&values[1] < 0)
                         angle = 0;
-                    if(taskCounter==2&&values[0]*values[1] > 0)
+                    if(taskCounter==2&&values[1] > 0)
                         angle = 0;
                     angles.add(Math.abs(roundNumber(angle, 2)));
 
