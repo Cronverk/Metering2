@@ -277,9 +277,9 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
                 float[] values = getOrientation();
                 if (checkRotate(values[2])) {
                     angle = values[1];
-                    if(taskCounter==1&&values[1] < 0)
+                    if(taskCounter==1&&values[0]*values[1] < 0)
                         angle = 0;
-                    if(taskCounter==2&&values[1] > 0)
+                    if(taskCounter==2&&values[0]*values[1] > 0)
                         angle = 0;
                     angles.add(Math.abs(roundNumber(angle, 2)));
 
