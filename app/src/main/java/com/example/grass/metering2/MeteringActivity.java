@@ -35,7 +35,6 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
         ValidationCallback,SoundPool.OnLoadCompleteListener {
     MeteringDialog dialog;
     SensorManager sensorManager;
-    SharedPreferences preferences;
 
     SoundPool sp;
     int sound;
@@ -169,17 +168,19 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
             values[2] = (float) Math.toDegrees(values[2]);
             Log.d("orientation","orientation 1 "+ values[0]+" " +values[1]+ " " + values[2]);
         }else {
-            double ax = accelerometerValues[0];
-            double ay = accelerometerValues[1];
-            double az = accelerometerValues[2];
-            double x  = Math.atan(ax/Math.sqrt(ay*ay+az*az));
-            double y  = Math.atan(ay/Math.sqrt(ax*ax+az*az));
-            double z  = Math.atan(az/Math.sqrt(ay*ay+ax*ax));
+            if(accelerometerValues!=null) {
+                double ax = accelerometerValues[0];
+                double ay = accelerometerValues[1];
+                double az = accelerometerValues[2];
+                double x = Math.atan(ax / Math.sqrt(ay * ay + az * az));
+                double y = Math.atan(ay / Math.sqrt(ax * ax + az * az));
+                double z = Math.atan(az / Math.sqrt(ay * ay + ax * ax));
 
 
-            values[0] = (float) Math.toDegrees(x);
-            values[1] = (float) Math.toDegrees(y);
-            values[2] = (float) Math.toDegrees(z)-90;
+                values[0] = (float) Math.toDegrees(x);
+                values[1] = (float) Math.toDegrees(y);
+                values[2] = (float) Math.toDegrees(z) - 90;
+            }else values = new float[]{0,0,0};
             Log.d("orientation","orientation 2 "+ values[0]+" " +values[1]+ " " + values[2]);
         }
         return values;
