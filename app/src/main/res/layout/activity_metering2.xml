@@ -90,7 +90,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Оновити"
+            android:text="Наступне вимірювання"
             android:id="@+id/buttonUpdate"
             android:layout_above="@+id/buttonChange"
             android:layout_centerHorizontal="true"
