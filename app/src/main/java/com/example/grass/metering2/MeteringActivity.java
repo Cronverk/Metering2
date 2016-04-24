@@ -328,7 +328,7 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
     }
 
     private double calculateHeight(double alpha,double betta, double a){
-        double h   = roundNumber(a/Math.tan(Math.toRadians(alpha)),2);
+        double h   = roundNumber(a*Math.tan(Math.toRadians(alpha)),2);
         double h1  = roundNumber(a*Math.tan(Math.toRadians(betta)),2);
         return h+h1;
     }
