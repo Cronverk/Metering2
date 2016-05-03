@@ -3,11 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".metering.MeteringActivity"
     android:onClick="onClick">
 
     <TextView
@@ -16,7 +11,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Висота"
         android:id="@+id/textView10"
-        android:textSize="35dp"
+        android:textSize="50dp"
         android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/heightValue"
         android:layout_alignStart="@+id/heightValue" />
@@ -26,11 +21,13 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/heightValue"
-        android:textSize="100dp"
+        android:textSize="120dp"
         android:text="00.00"
-        android:layout_below="@+id/textView10"
+        android:layout_alignBottom="@+id/textView"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="148dp"
+        android:layout_marginEnd="148dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,10 +35,11 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Кут на Вершину"
         android:id="@+id/textView"
-        android:textSize="35dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/layer"
-        android:layout_alignStart="@+id/layer" />
+        android:textSize="50dp"
+        android:layout_below="@+id/bettaValue"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -49,11 +47,10 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="00.00"
         android:id="@+id/alphaValue"
-        android:textSize="55dp"
-        android:layout_alignTop="@+id/heightValue"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="-10dp" />
+        android:textSize="70dp"
+        android:layout_below="@+id/textView"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -84,8 +81,9 @@
         android:visibility="visible"
         android:id="@+id/layer"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignRight="@+id/textView3"
+        android:layout_alignEnd="@+id/textView3"
+        android:layout_alignParentBottom="true">
 
         <Button
             android:layout_width="match_parent"
@@ -115,28 +113,28 @@
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Кут на Основу"
-        android:id="@+id/textView4"
-        android:textSize="35dp"
-        android:layout_below="@+id/alphaValue"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="50dp"
+        android:layout_alignTop="@+id/textView10"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="-15dp" />
+        android:layout_marginLeft="10dp" />
 
     <TextView
+        android:id="@+id/bettaValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="00.00"
-        android:id="@+id/bettaValue"
-        android:textSize="55dp"
+        android:textSize="70dp"
         android:layout_below="@+id/textView4"
-        android:layout_alignLeft="@+id/layer"
-        android:layout_alignStart="@+id/layer"
-        android:layout_marginTop="-10dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -148,5 +146,14 @@
         android:layout_alignTop="@+id/bettaValue"
         android:layout_toRightOf="@+id/bettaValue"
         android:layout_toEndOf="@+id/bettaValue" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/imageView2"
+        android:src="@drawable/abc_ic_ab_back_material"
+        android:layout_below="@+id/heightValue"
+        android:layout_alignRight="@+id/heightValue"
+        android:layout_alignEnd="@+id/heightValue" />
 
 </RelativeLayout>

@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -13,6 +15,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.grass.metering2.calibration.CalibrationActivity;
+import com.example.grass.metering2.calibration.DalCalibrActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +35,7 @@ public class MeteringDialog extends DialogFragment implements View.OnClickListen
     private AlertDialog dialog;
 
     private double height;
+    private Context context;
 
     HashMap<String,Double> map;
 
@@ -40,9 +46,6 @@ public class MeteringDialog extends DialogFragment implements View.OnClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
     }
 
     public void setViews(){
@@ -56,7 +59,7 @@ public class MeteringDialog extends DialogFragment implements View.OnClickListen
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Log.d("crea", "createDialog");
 
-        mSettings = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        mSettings = PreferenceManager.getDefaultSharedPreferences(activity);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         // Inflate and set the layout for the dialog
@@ -67,10 +70,12 @@ public class MeteringDialog extends DialogFragment implements View.OnClickListen
 
         editText   = (EditText)   view.findViewById(R.id.editHeight);
         Button button = (Button) view.findViewById(R.id.buttonOk);
+        Button butdal = (Button) view.findViewById(R.id.butDal);
         button.setOnClickListener(this);
+        butdal.setOnClickListener(this);
 
         dialog     = builder.create();
-        setViews();
+       // setViews();
 
         return dialog;
     }
@@ -78,7 +83,7 @@ public class MeteringDialog extends DialogFragment implements View.OnClickListen
     @Override
     public void onResume() {
         super.onResume();
-
+        setViews();
     }
 
     private void saveData(float height){
@@ -108,24 +113,34 @@ public class MeteringDialog extends DialogFragment implements View.OnClickListen
         setViews();
         return super.show(transaction, tag);
     }
+    public void setEditText(String height){
+        editText.setText(height);
+    }
 
     @Override
     public void onClick(View v) {
-        double height = 0;
-        try {
-            height = Double.parseDouble(editText.getText().toString());
-        }catch (Exception e){
+        if(v.getId() ==R.id.butDal){
+            activity.stopTask();
+            Intent intent = new Intent(activity, DalnometerActivity.class);
+            //intent.putExtra("",mSettings);
+            startActivity(intent);
+        }
+        else {
+            double height = 0;
+            try {
+                height = Double.parseDouble(editText.getText().toString());
+            } catch (Exception e) {
 
+            }
+            if (height > 0) {
+                saveData(Float.valueOf("" + height));
+                this.height = height;
+                activity.resetActivity();
+                dialog.dismiss();
+            } else
+                Toast.makeText(activity.getApplicationContext(),
+                        "Значення має бути більше нуля ", Toast.LENGTH_LONG).show();
         }
-        if(height>0) {
-            saveData(Float.valueOf("" + height));
-            this.height = height;
-            activity.resetActivity();
-            dialog.dismiss();
-        }
-        else
-            Toast.makeText(activity.getApplicationContext(),
-                    "Значення має бути більше нуля ",Toast.LENGTH_LONG).show();
     }
 
     public double getParams(){

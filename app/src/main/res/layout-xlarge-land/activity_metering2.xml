@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    tools:context=".metering.MeteringActivity"
     android:onClick="onClick">
 
     <TextView
@@ -146,5 +145,13 @@
         android:layout_alignTop="@+id/bettaValue"
         android:layout_toRightOf="@+id/bettaValue"
         android:layout_toEndOf="@+id/bettaValue" />
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/imageView2"
+        android:src="@drawable/abc_ic_ab_back_material"
+        android:layout_below="@+id/heightValue"
+        android:layout_alignRight="@+id/heightValue"
+        android:layout_alignEnd="@+id/heightValue" />
 
 </RelativeLayout>

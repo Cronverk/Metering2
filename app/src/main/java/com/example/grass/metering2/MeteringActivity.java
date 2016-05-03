@@ -16,6 +16,7 @@ import android.media.SoundPool;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -87,7 +88,7 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
 
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        resetActivity();
+        //resetActivity();
     }
 
     boolean checkDate(){
@@ -116,9 +117,13 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
         super.onResume();
         resetActivity();
 
-        //startTask();
 
     }
+
+    public void stopTask(){
+        atask.stopTask();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -131,7 +136,7 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
                 break;
             case R.id.buttonChange:
                 dialog.show(getFragmentManager(), "Налаштування");
-                resetActivity();
+                //resetActivity();
                 break;
             case R.id.buttonUpdate:
                 resetActivity();
@@ -260,7 +265,7 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
         private double betta = -1;
 
         public void stopTask(){
-            runFlag = false;
+            this.runFlag = false;
         }
 
 
@@ -268,7 +273,7 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
         protected Double doInBackground(Double... params) {
             double angle = 0.0;
             ArrayList<Double> angles = new ArrayList<>();
-            while (taskCounter!=3) {
+            while (taskCounter!=3&&runFlag==true) {
                 try {
                     new Thread().sleep(100);
                 } catch (InterruptedException e) {
@@ -277,9 +282,9 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
                 float[] values = getOrientation();
                 if (checkRotate(values[2])) {
                     angle = values[1];
-                    if(taskCounter==1&&values[1] < 0)
+                    if(taskCounter==1&&values[1] > 0)
                         angle = 0;
-                    if(taskCounter==2&&values[1] > 0)
+                    if(taskCounter==2&&values[1] < 0)
                         angle = 0;
                     angles.add(Math.abs(roundNumber(angle, 2)));
 
@@ -295,12 +300,12 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
         protected void onProgressUpdate(String... data) {
             switch ((int)taskCounter){
                 case 1:
-                    alphaView.setText(data[0]);
-                    alpha = Double.parseDouble(data[0]);
-                    break;
-                case 2:
                     bettaView.setText(data[0]);
                     betta = Double.parseDouble(data[0]);
+                    break;
+                case 2:
+                    alphaView.setText(data[0]);
+                    alpha = Double.parseDouble(data[0]);
                     break;
             }
         }
@@ -312,8 +317,8 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
             if(alpha>=0&&betta>=0) {
                 double height = 0;
                 if(alpha!=0 && betta !=0)
-                    height = calculateHeight(alpha, betta, dialog.getParams());
-                heightView.setText("" + roundNumber(height, 2));
+                    height = roundNumber(calculateHeight(alpha, betta, dialog.getParams()),1);
+                heightView.setText("" + height);
             }
         }
     }
@@ -339,5 +344,14 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
         return number/accurancy;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {return;}
+        String length = data.getStringExtra("length");
+        SharedPreferences mSetting = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = mSetting.edit();
+            editor.putString("height",length);
+            editor.commit();
 
+    }
 }
