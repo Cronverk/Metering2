@@ -4,7 +4,13 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:onClick="onClick">
-
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/imageView2"
+        android:src="@mipmap/arrow"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -12,11 +18,11 @@
         android:text="Висота"
         android:id="@+id/textView10"
         android:textSize="70dp"
-        android:layout_alignParentTop="true"
+        android:layout_marginLeft="207dp"
+        android:layout_marginStart="207dp"
+        android:layout_below="@+id/imageView2"
         android:layout_toRightOf="@+id/textView"
-        android:layout_toEndOf="@+id/textView"
-        android:layout_marginLeft="208dp"
-        android:layout_marginStart="208dp" />
+        android:layout_toEndOf="@+id/textView" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -36,9 +42,9 @@
         android:text="Кут на Вершину"
         android:id="@+id/textView"
         android:textSize="70dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/layer"
-        android:layout_alignStart="@+id/layer" />
+        android:layout_below="@+id/imageView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -145,13 +151,6 @@
         android:layout_alignTop="@+id/bettaValue"
         android:layout_toRightOf="@+id/bettaValue"
         android:layout_toEndOf="@+id/bettaValue" />
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/imageView2"
-        android:src="@drawable/abc_ic_ab_back_material"
-        android:layout_below="@+id/heightValue"
-        android:layout_alignRight="@+id/heightValue"
-        android:layout_alignEnd="@+id/heightValue" />
+
 
 </RelativeLayout>
