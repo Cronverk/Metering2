@@ -19,9 +19,11 @@
         android:text="Висота"
         android:id="@+id/textView10"
         android:textSize="70dp"
-        android:layout_above="@+id/textView2"
-        android:layout_alignLeft="@+id/heightValue"
-        android:layout_alignStart="@+id/heightValue" />
+        android:layout_below="@+id/imageView2"
+        android:layout_toRightOf="@+id/textView2"
+        android:layout_toEndOf="@+id/textView2"
+        android:layout_marginLeft="197dp"
+        android:layout_marginStart="197dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -30,11 +32,9 @@
         android:id="@+id/heightValue"
         android:textSize="180dp"
         android:text="00.00"
-        android:layout_below="@+id/textView10"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="25dp"
-        android:layout_marginEnd="25dp" />
+        android:layout_alignTop="@+id/textView2"
+        android:layout_alignLeft="@+id/textView10"
+        android:layout_alignStart="@+id/textView10" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -77,20 +77,17 @@
         android:text="m"
         android:id="@+id/textView3"
         android:textSize="70dp"
+        android:visibility="visible"
         android:layout_alignTop="@+id/heightValue"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:visibility="gone" />
+        android:layout_toRightOf="@+id/heightValue"
+        android:layout_toEndOf="@+id/heightValue" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:onClick="onClick"
-        android:visibility="gone"
-        android:id="@+id/layer"
-        android:layout_below="@+id/textView3"
-        android:layout_alignRight="@+id/heightValue"
-        android:layout_alignEnd="@+id/heightValue">
+        android:visibility="visible"
+        android:id="@+id/layer">
 
     </RelativeLayout>
 

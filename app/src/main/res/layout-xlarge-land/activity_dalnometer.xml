@@ -109,7 +109,8 @@
             android:textSize="50dp"
             style="@style/AlertDialog.AppCompat"
             android:nestedScrollingEnabled="false"
-            android:onClick="onClick" />
+            android:onClick="onClick"
+            android:visibility="gone" />
 
         <Button
             style="@style/AlertDialog.AppCompat"

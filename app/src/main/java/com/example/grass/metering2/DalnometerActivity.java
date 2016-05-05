@@ -101,9 +101,7 @@ public class DalnometerActivity extends Activity implements View.OnClickListener
         switch (v.getId()) {
             case R.id.layer:
                 Log.d("ran", "ran");
-
                 stopTask();
-
                 break;
             case R.id.buttonChange:
                 stopTask();
@@ -112,11 +110,19 @@ public class DalnometerActivity extends Activity implements View.OnClickListener
             case R.id.buttonUpdate:
                 try {
                     stopTask();
-                    double[] data = dialog.getParams();;
+                    double[] data = dialog.getParams();
                     startTask(data[0]);
                 }catch (Exception e){
 
                 }
+                break;
+            case R.id.buttonCalibration:
+                SharedPreferences.Editor editor = spAccurate.edit();
+                editor.clear();
+                editor.commit();
+                stopTask();
+                Intent intent = new Intent(this, CalibrationActivity.class);
+                startActivity(intent);
                 break;
         }
     }

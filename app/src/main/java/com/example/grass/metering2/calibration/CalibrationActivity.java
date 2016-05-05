@@ -49,14 +49,7 @@ public class CalibrationActivity extends Activity implements View.OnClickListene
         view.setAdapter(adapter);
         Button but  = (Button)findViewById(R.id.button4);
         but.setOnClickListener(this);
-        view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                itemPoistion = position+1;
-                Intent intent = new Intent(context, DalCalibrActivity.class);
-                startActivityForResult(intent,1);
-            }
-        });
+
     }
 
     @Override
@@ -83,20 +76,8 @@ public class CalibrationActivity extends Activity implements View.OnClickListene
             double accurate = roundNumber(1-(length/eyeLength),2);
 
             adapter.notifyDataSetChanged();
-            if(itemPoistion ==0) {
-                addAccuracy(++colibrCount, angle, eyeLength, eyeHeight, accurate, length);
-                list.add(new Item(eyeHeight,length,angle,eyeLength,accurate));
-            }
-            else{
-                list.get(itemPoistion-1).setAngle(angle);
-                list.get(itemPoistion-1).setError(accurate);
-                list.get(itemPoistion-1).setHeight(eyeHeight);
-                list.get(itemPoistion-1).setMeger(length);
-                list.get(itemPoistion-1).setuMerge(eyeLength);
-                adapter.notifyDataSetChanged();
-                addAccuracy(itemPoistion,angle,eyeLength,eyeHeight,accurate,length);
-                itemPoistion = 0;
-            }
+            list.add(new Item(eyeHeight,length,angle,eyeLength,accurate));
+            addAccuracy(++colibrCount, angle, eyeLength, eyeHeight, accurate, length);
             Log.d("log","angle = "+angle+"length = "+length);
         }
     }
@@ -112,7 +93,7 @@ public class CalibrationActivity extends Activity implements View.OnClickListene
                 colibrCount++;
             editor.putString("colibrCount",""+colibrCount);
             editor.putString("accurate",""+countDisp());
-        editor.apply();
+        editor.commit();
 
     }
     private void importAccuracy(int count){
@@ -131,7 +112,7 @@ public class CalibrationActivity extends Activity implements View.OnClickListene
         double sum  = 0;
         double disp = 0;
         for(Item item : list)
-            sum = item.getError()/list.size();
+            sum += item.getError()/list.size();
         for(Item item : list){
             disp+=Math.pow(item.getError() - sum,2)/list.size();
         }

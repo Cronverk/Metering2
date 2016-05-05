@@ -52,7 +52,7 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Даликомір"
+        android:text="@string/but_dalek"
         android:id="@+id/butDal"
         android:layout_below="@+id/editHeight"
         android:layout_centerHorizontal="true"

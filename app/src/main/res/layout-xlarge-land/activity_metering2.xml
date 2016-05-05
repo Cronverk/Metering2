@@ -86,9 +86,9 @@
         android:onClick="onClick"
         android:visibility="visible"
         android:id="@+id/layer"
-        android:layout_alignTop="@+id/textView10"
         android:layout_alignLeft="@+id/alphaValue"
-        android:layout_alignStart="@+id/alphaValue">
+        android:layout_alignStart="@+id/alphaValue"
+        android:layout_alignParentTop="true">
 
         <Button
             android:layout_width="match_parent"

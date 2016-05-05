@@ -77,7 +77,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="m"
         android:id="@+id/textView3"
-        android:textSize="50dp"
+        android:textSize="35dp"
         android:layout_alignTop="@+id/heightValue"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -110,7 +110,8 @@
             android:textSize="50dp"
             style="@style/AlertDialog.AppCompat"
             android:nestedScrollingEnabled="false"
-            android:onClick="onClick" />
+            android:onClick="onClick"
+            android:visibility="gone" />
 
         <Button
             style="@style/AlertDialog.AppCompat"
