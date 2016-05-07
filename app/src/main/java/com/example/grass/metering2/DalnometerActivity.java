@@ -21,6 +21,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -96,6 +97,12 @@ public class DalnometerActivity extends Activity implements View.OnClickListener
         super.onResume();
     }
 
+    private void enableButtons(boolean status){
+        Button b = (Button)findViewById(R.id.buttonCalibration);
+        b.setEnabled(status);
+        b =(Button)findViewById(R.id.buttonChange);
+        b.setEnabled(status);
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -220,6 +227,7 @@ public class DalnometerActivity extends Activity implements View.OnClickListener
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            enableButtons(false);
             heightView.setText("00.00");
             angleView.setText("00.00");
             runFlag = true;
@@ -264,6 +272,7 @@ public class DalnometerActivity extends Activity implements View.OnClickListener
 
             sp.play(sound, 1, 1, 0, 0, 1);
             sendText(""+roundNumber(doubles[1]+accurate, 1));
+            enableButtons(true);
         }
     }
 

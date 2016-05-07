@@ -21,6 +21,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.grass.metering2.validation.MyValidator;
@@ -254,6 +255,12 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
     public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
 
     }
+    private void enableButtons(boolean status){
+        Button b = (Button)findViewById(R.id.buttonChange);
+        b.setEnabled(status);
+        b =(Button)findViewById(R.id.buttonUpdate);
+        b.setEnabled(status);
+    }
 
 
     public class AngleTask extends AsyncTask<Double,String,Double>{
@@ -268,6 +275,11 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
             this.runFlag = false;
         }
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            enableButtons(false);
+        }
 
         @Override
         protected Double doInBackground(Double... params) {
@@ -320,6 +332,7 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
                     height = roundNumber(calculateHeight(alpha, betta, dialog.getParams()),1);
                 heightView.setText("" + height);
             }
+            enableButtons(true);
         }
     }
     public void resetActivity(){

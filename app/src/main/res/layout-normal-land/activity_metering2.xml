@@ -85,12 +85,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:onClick="onClick"
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/layer"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/textView3"
-        android:layout_alignEnd="@+id/textView3">
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
 
         <Button
             android:layout_width="match_parent"
