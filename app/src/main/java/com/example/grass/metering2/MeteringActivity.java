@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.grass.metering2.validation.MyValidator;
@@ -260,6 +261,14 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
         b.setEnabled(status);
         b =(Button)findViewById(R.id.buttonUpdate);
         b.setEnabled(status);
+        if(status){
+            RelativeLayout layer = (RelativeLayout) findViewById(R.id.layer);
+            layer.setVisibility(View.GONE);
+        }
+        else{
+            RelativeLayout layer = (RelativeLayout) findViewById(R.id.layer);
+            layer.setVisibility(View.VISIBLE);
+        }
     }
 
 
