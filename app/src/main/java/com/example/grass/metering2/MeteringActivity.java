@@ -365,8 +365,8 @@ public class MeteringActivity extends AppCompatActivity implements View.OnClickL
 
     public static double calculateHeight(double alpha,double betta, double h1){
 
-        double acc_l  = Double.parseDouble(spAccurate.getString("colibr2accurate","0.0"));
-        double acc_h  = Double.parseDouble(spAccurate.getString("colibr1accurate","0.0"));
+        double acc_l  = Double.parseDouble(spAccurate.getString("calibr2accurate","0.0"));
+        double acc_h  = Double.parseDouble(spAccurate.getString("calibr1accurate","0.0"));
         double len = h1/Math.tan(Math.toRadians(betta))+acc_l;
         double h2  = len*Math.tan(Math.toRadians(alpha))+acc_h;
         Log.d("accurate", "l = "+acc_l);
