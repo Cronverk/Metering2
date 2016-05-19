@@ -25,6 +25,7 @@ public class CalibrationActivity extends Activity implements View.OnClickListene
     SharedPreferences spAccurate;
     int itemPoistion = 0;
     Context context;
+    String calibrType ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +36,14 @@ public class CalibrationActivity extends Activity implements View.OnClickListene
         adapter = new ItemAdapter(this,list);
         spAccurate = getSharedPreferences("ACCURATE", MODE_PRIVATE);
 
-        if(spAccurate.contains("colibrCount")!=true) {
-            spAccurate.edit().putString("colibrCount", "0");
+        calibrType = getIntent().getStringExtra("calibrType");
+
+        if(spAccurate.contains(calibrType+"colibrCount")!=true) {
+            spAccurate.edit().putString(calibrType+"colibrCount", "0");
             spAccurate.edit().apply();
         }
         else
-            colibrCount = Integer.parseInt(spAccurate.getString("colibrCount",""));
+            colibrCount = Integer.parseInt(spAccurate.getString(calibrType+"colibrCount",""));
 
         importAccuracy(colibrCount);
 
@@ -50,6 +53,7 @@ public class CalibrationActivity extends Activity implements View.OnClickListene
         Button but  = (Button)findViewById(R.id.button4);
         but.setOnClickListener(this);
 
+
     }
 
     @Override
@@ -57,6 +61,7 @@ public class CalibrationActivity extends Activity implements View.OnClickListene
         switch (v.getId()){
             case R.id.button4:
                 Intent intent = new Intent(this, DalCalibrActivity.class);
+                intent.putExtra("calibrType",calibrType);
                 startActivityForResult(intent,1);
                 break;
         }
@@ -69,10 +74,10 @@ public class CalibrationActivity extends Activity implements View.OnClickListene
             double length = 0.0;
             double eyeLength = 0.0;
             double eyeHeight= 0.0;
-            angle = data.getDoubleExtra("angle",angle);
-            length = data.getDoubleExtra("length",length);
-            eyeLength = data.getDoubleExtra("eyeLength",eyeLength);
-            eyeHeight = data.getDoubleExtra("eyeHeight",eyeHeight);
+            angle = data.getDoubleExtra(calibrType+"angle",angle);
+            length = data.getDoubleExtra(calibrType+"value",length);
+            eyeLength = data.getDoubleExtra(calibrType+"eyeLength",eyeLength);
+            eyeHeight = data.getDoubleExtra(calibrType+"eyeHeight",eyeHeight);
             double accurate = roundNumber(1-(length/eyeLength),2);
 
             adapter.notifyDataSetChanged();
@@ -84,26 +89,26 @@ public class CalibrationActivity extends Activity implements View.OnClickListene
 
     private void addAccuracy(int id,double angle,double eyeLength,double eyeHeight,double accurate, double length){
         SharedPreferences.Editor editor = spAccurate.edit();
-            editor.putString("angle"+id,""+angle);
-            editor.putString("eyeLength"+id,""+eyeLength);
-            editor.putString("eyeHeight"+id,""+eyeHeight);
-            editor.putString("accurate"+id,""+accurate);
-            editor.putString("length"+id,""+length);
+            editor.putString(calibrType+"angle"+id,""+angle);
+            editor.putString(calibrType+"eyeLength"+id,""+eyeLength);
+            editor.putString(calibrType+"eyeHeight"+id,""+eyeHeight);
+            editor.putString(calibrType+"accurate"+id,""+accurate);
+            editor.putString(calibrType+"value"+id,""+length);
             if(id>colibrCount)
                 colibrCount++;
-            editor.putString("colibrCount",""+colibrCount);
-            editor.putString("accurate",""+countDisp());
+            editor.putString(calibrType+"colibrCount",""+colibrCount);
+            editor.putString(calibrType+"accurate",""+countDisp());
         editor.commit();
 
     }
     private void importAccuracy(int count){
 
         for(int i  = 1;i <= count; i++){
-            double angle = Double.parseDouble(spAccurate.getString("angle"+i,""));
-            double eyeLength = Double.parseDouble(spAccurate.getString("eyeLength"+i,""));
-            double eyeHeight = Double.parseDouble(spAccurate.getString("eyeHeight"+i,""));
-            double accurate = Double.parseDouble(spAccurate.getString("accurate"+i,""));
-            double length = Double.parseDouble(spAccurate.getString("length"+i,""));
+            double angle = Double.parseDouble(spAccurate.getString(calibrType+"angle"+i,"0.0"));
+            double eyeLength = Double.parseDouble(spAccurate.getString(calibrType+"eyeLength"+i,"0.0"));
+            double eyeHeight = Double.parseDouble(spAccurate.getString(calibrType+"eyeHeight"+i,"0.0"));
+            double accurate = Double.parseDouble(spAccurate.getString(calibrType+"accurate"+i,"0.0"));
+            double length = Double.parseDouble(spAccurate.getString(calibrType+"value"+i,"0.0"));
             list.add(new Item(eyeHeight,length,angle,eyeLength,accurate));
         }
     }

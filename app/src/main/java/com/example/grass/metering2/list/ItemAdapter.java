@@ -50,7 +50,6 @@ public class ItemAdapter extends BaseAdapter {
         View viewItem;
         Item item = list.get(position);
         viewItem = inflater.inflate(R.layout.item, null);
-        ((TextView) viewItem.findViewById(R.id.text1)).setText(""+item.getHeight());
         ((TextView) viewItem.findViewById(R.id.text2)).setText(""+item.getAngle());
         ((TextView) viewItem.findViewById(R.id.text3)).setText(""+item.getMeger());
         ((TextView) viewItem.findViewById(R.id.text4)).setText(""+item.getuMerge());

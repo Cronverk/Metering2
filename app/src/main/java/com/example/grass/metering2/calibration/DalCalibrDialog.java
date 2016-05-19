@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.grass.metering2.R;
 
@@ -28,12 +30,14 @@ public class DalCalibrDialog extends DialogFragment implements View.OnClickListe
     private View view;
     DalCalibrActivity activity;
     private AlertDialog dialog;
-
+    private String calibrType = "";
     public double eyeHeight;
     public double eyeLength;
 
     public void setMeteringActivity(DalCalibrActivity activity){
         this.activity = activity;
+        this.calibrType = activity.calibrType;
+
     }
 
     @Override
@@ -58,8 +62,8 @@ public class DalCalibrDialog extends DialogFragment implements View.OnClickListe
         editLength   = (EditText)   view.findViewById(R.id.editLength);
         Button button = (Button) view.findViewById(R.id.button);
         button.setOnClickListener(this);
-
         dialog     = builder.create();
+        init(calibrType);
         return dialog;
     }
 
@@ -101,4 +105,21 @@ public class DalCalibrDialog extends DialogFragment implements View.OnClickListe
         this.eyeLength = eyeLength;
         activity.startTask(eyeHeight);
     }
+
+
+    public void init(String calibrType){
+        TextView textLength = (TextView)view.findViewById(R.id.length_title);
+        TextView textHeight = (TextView)view.findViewById(R.id.height_title);
+        if(calibrType.equals("calibr1")){
+            textHeight.setText(R.string.dial_str2);
+            textLength.setText(R.string.dial_str1);
+        }
+        else{
+            textHeight.setText(R.string.dialog_title);
+            textLength.setText(R.string.dial_str1);
+        }
+        textHeight.refreshDrawableState();
+        textLength.refreshDrawableState();
+    }
+
 }

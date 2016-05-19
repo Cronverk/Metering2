@@ -70,9 +70,7 @@ public class MeteringDialog extends DialogFragment implements View.OnClickListen
 
         editText   = (EditText)   view.findViewById(R.id.editHeight);
         Button button = (Button) view.findViewById(R.id.buttonOk);
-        Button butdal = (Button) view.findViewById(R.id.butDal);
         button.setOnClickListener(this);
-        butdal.setOnClickListener(this);
 
         dialog     = builder.create();
        // setViews();
@@ -119,13 +117,7 @@ public class MeteringDialog extends DialogFragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        if(v.getId() ==R.id.butDal){
-            activity.stopTask();
-            Intent intent = new Intent(activity, DalnometerActivity.class);
-            //intent.putExtra("",mSettings);
-            startActivity(intent);
-        }
-        else {
+
             double height = 0;
             try {
                 height = Double.parseDouble(editText.getText().toString());
@@ -140,7 +132,6 @@ public class MeteringDialog extends DialogFragment implements View.OnClickListen
             } else
                 Toast.makeText(activity.getApplicationContext(),
                         "Значення має бути більше нуля ", Toast.LENGTH_LONG).show();
-        }
     }
 
     public double getParams(){

@@ -1,8 +1,14 @@
 <resources>
     <string name="app_name">Висотомір безбазисний</string>
     <string name="action_settings">Settings</string>
+    <string name="action_calibr1">Калібрування на вершину</string>
+    <string name="action_calibr2">Калібрування на основу</string>
     <string name="angle_str">Кут до землі</string>
+    <string name="angle_str2">Кут на верршину</string>
     <string name="dialog_title">Відстань до рiвня очей</string>
+    <string name="dial_str1">Відстань до дерева</string>
+    <string name="dial_str2">Висота дерева</string>
+    <string name="dialog_title2">Відстань до рiвня очей</string>
     <string name="but_dalek">Далекомір</string>
     <string name="togle1_str">Базисна вiдстань 20м</string>
     <string name="togle2_str">Базисна вiдстань 30м</string>

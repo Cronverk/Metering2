@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/dialog_title"
-        android:id="@+id/textView5"
+        android:id="@+id/height_title"
         android:layout_gravity="center_horizontal"
         android:textSize="30dp"
         android:gravity="center_vertical|center"
@@ -25,7 +25,7 @@
         android:textSize="30dp"
         android:focusable="true"
         android:visibility="visible"
-        android:layout_below="@+id/textView5"
+        android:layout_below="@+id/height_title"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -34,8 +34,8 @@
         android:text="Розрахувати"
         android:id="@+id/button"
         android:layout_below="@+id/editHeight"
-        android:layout_alignLeft="@+id/textView5"
-        android:layout_alignStart="@+id/textView5" />
+        android:layout_alignLeft="@+id/height_title"
+        android:layout_alignStart="@+id/height_title" />
 
 
 </RelativeLayout>

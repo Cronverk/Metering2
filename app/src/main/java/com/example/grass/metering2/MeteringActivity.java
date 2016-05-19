@@ -1,7 +1,6 @@
 package com.example.grass.metering2;
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,14 +16,19 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.grass.metering2.calibration.CalibrationActivity;
 import com.example.grass.metering2.validation.MyValidator;
 import com.example.grass.metering2.validation.ValidationCallback;
 
@@ -34,7 +38,7 @@ import java.util.Calendar;
 
 import static com.example.grass.metering2.Constants.*;
 
-public class MeteringActivity extends Activity implements View.OnClickListener, SensorEventListener,
+public class MeteringActivity extends AppCompatActivity implements View.OnClickListener, SensorEventListener,
         ValidationCallback,SoundPool.OnLoadCompleteListener {
     MeteringDialog dialog;
     SensorManager sensorManager;
@@ -47,6 +51,9 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
     TextView heightView;
     TextView alphaView;
     TextView bettaView;
+    static SharedPreferences spAccurate;
+    Menu menu;
+    Toolbar toolbar;
 
     //MeteringTask mtask;
     AngleTask    atask;
@@ -62,6 +69,12 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_metering2);
+
+        spAccurate = getSharedPreferences("ACCURATE", MODE_PRIVATE);
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         dialog = new MeteringDialog();
         dialog.setMeteringActivity(this);
 
@@ -164,17 +177,6 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
 
     public float[] getOrientation(){
         float[] values = new float[3];
-/*
-        if(magneticFieldValues !=null) {
-            float[] R = new float[9];
-            SensorManager.getRotationMatrix(R, null, accelerometerValues, magneticFieldValues);
-            SensorManager.getOrientation(R, values);
-
-            values[0] = (float) Math.toDegrees(values[0]);
-            values[1] = (float) Math.toDegrees(values[1]);
-            values[2] = (float) Math.toDegrees(values[2]);
-            Log.d("orientation","orientation 1 "+ values[0]+" " +values[1]+ " " + values[2]);
-        }else {*/
             if(accelerometerValues!=null) {
                 double ax = accelerometerValues[0];
                 double ay = accelerometerValues[1];
@@ -189,7 +191,6 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
                 values[2] = (float) Math.toDegrees(z) - 90;
             }else values = new float[]{0,0,0};
             Log.d("orientation","orientation 2 "+ values[0]+" " +values[1]+ " " + values[2]);
-      //  }
         return values;
     }
     public boolean checkRotate(float angle){
@@ -264,11 +265,19 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
         if(status){
             RelativeLayout layer = (RelativeLayout) findViewById(R.id.layer);
             layer.setVisibility(View.GONE);
+
+
+
+
+          //  menu.getItem(R.).setEnabled(false);
+           // menu.getItem(2).setEnabled(false);
         }
         else{
             RelativeLayout layer = (RelativeLayout) findViewById(R.id.layer);
             layer.setVisibility(View.VISIBLE);
-        }
+           }
+        Menu menu = toolbar.getMenu();
+        menu.setGroupVisible(R.id.main_menu_group, status);
     }
 
 
@@ -354,10 +363,15 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
         atask.execute(1.0);
     }
 
-    private double calculateHeight(double alpha,double betta, double a){
-        double h   = roundNumber(a*Math.tan(Math.toRadians(alpha)),2);
-        double h1  = roundNumber(a*Math.tan(Math.toRadians(betta)),2);
-        return h+h1;
+    public static double calculateHeight(double alpha,double betta, double h1){
+
+        double acc_l  = Double.parseDouble(spAccurate.getString("colibr2accurate","0.0"));
+        double acc_h  = Double.parseDouble(spAccurate.getString("colibr1accurate","0.0"));
+        double len = h1/Math.tan(Math.toRadians(betta))+acc_l;
+        double h2  = len*Math.tan(Math.toRadians(alpha))+acc_h;
+        Log.d("accurate", "l = "+acc_l);
+        Log.d("accurate", "h = "+acc_h);
+        return h1+h2;
     }
     public double roundNumber(double number , double accurancy){
         accurancy = Math.pow(10,accurancy);
@@ -375,5 +389,40 @@ public class MeteringActivity extends Activity implements View.OnClickListener, 
             editor.putString("height",length);
             editor.commit();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        this.menu = menu;
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        SharedPreferences.Editor editor = spAccurate.edit();
+        editor.clear();
+        editor.commit();
+        stopTask();
+        int id = item.getItemId();
+        if (id == R.id.action_calibr2) {
+            stopTask();
+            Intent intent = new Intent(this, CalibrationActivity.class);
+            intent.putExtra("calibrType","calibr2");
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.action_calibr1) {
+            stopTask();
+            Intent intent = new Intent(this, CalibrationActivity.class);
+            intent.putExtra("calibrType","calibr1");
+            startActivity(intent);
+            return true;
+
+
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

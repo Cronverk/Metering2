@@ -2,15 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    android:onClick="onClick">
-    <ImageView
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:id="@+id/imageView2"
-        android:src="@mipmap/arrow2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:background="@color/colorPrimary"
+        android:layout_height="70dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/imageView2"
+            android:src="@mipmap/arrow2"/>
+
+    </android.support.v7.widget.Toolbar>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,7 +24,7 @@
         android:text="Висота"
         android:id="@+id/textView10"
         android:textSize="50dp"
-        android:layout_below="@+id/imageView2"
+        android:layout_below="@+id/toolbar"
         android:layout_alignLeft="@+id/heightValue"
         android:layout_alignStart="@+id/heightValue" />
 
@@ -30,8 +36,8 @@
         android:textSize="130dp"
         android:text="00.00"
         android:layout_below="@+id/textView10"
-        android:layout_toRightOf="@+id/textView"
-        android:layout_toEndOf="@+id/textView"
+        android:layout_toRightOf="@+id/angle_title"
+        android:layout_toEndOf="@+id/angle_title"
         android:layout_marginLeft="133dp"
         android:layout_marginStart="133dp" />
 
@@ -40,7 +46,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Кут на Вершину"
-        android:id="@+id/textView"
+        android:id="@+id/angle_title"
         android:textSize="50dp"
         android:layout_below="@+id/bettaValue"
         android:layout_alignParentLeft="true"
@@ -54,9 +60,9 @@
         android:text="00.00"
         android:id="@+id/alphaValue"
         android:textSize="70dp"
-        android:layout_below="@+id/textView"
-        android:layout_alignLeft="@+id/textView"
-        android:layout_alignStart="@+id/textView" />
+        android:layout_below="@+id/angle_title"
+        android:layout_alignLeft="@+id/angle_title"
+        android:layout_alignStart="@+id/angle_title" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -111,7 +117,8 @@
         android:layout_height="match_parent"
         android:onClick="onClick"
         android:visibility="visible"
-        android:id="@+id/layer">
+        android:id="@+id/layer"
+        android:layout_below="@+id/toolbar">
 
     </RelativeLayout>
 
@@ -122,7 +129,7 @@
         android:text="Кут на Основу"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textSize="50dp"
-        android:layout_below="@+id/imageView2"
+        android:layout_below="@+id/toolbar"
         android:layout_alignLeft="@+id/bettaValue"
         android:layout_alignStart="@+id/bettaValue" />
 

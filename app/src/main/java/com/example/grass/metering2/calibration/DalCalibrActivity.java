@@ -34,6 +34,7 @@ public class DalCalibrActivity extends Activity implements View.OnClickListener,
     private double[] task_data;
     TextView heightView;
     TextView angleView;
+    String calibrType = "";
 
     MeteringTask task;
 
@@ -45,9 +46,6 @@ public class DalCalibrActivity extends Activity implements View.OnClickListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
         setContentView(R.layout.activity_meter);
 
         sp = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
@@ -60,7 +58,7 @@ public class DalCalibrActivity extends Activity implements View.OnClickListener,
         }
 
         task_data = new double[]{0, 0};
-
+        calibrType = getIntent().getStringExtra("calibrType");
         dialog = new DalCalibrDialog();
         dialog.setMeteringActivity(this);
 
@@ -73,12 +71,18 @@ public class DalCalibrActivity extends Activity implements View.OnClickListener,
         angles = new ArrayList<>();
 
         dialog.show(getFragmentManager(), "Налаштування");
-
+        //dialog.init(calibrType);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        calibrType = getIntent().getStringExtra("calibrType");
+        intiDialog();
+    }
 
     @Override
     public void onClick(View v) {
@@ -126,6 +130,7 @@ public class DalCalibrActivity extends Activity implements View.OnClickListener,
     public double[] calculateHeight(double angle, double height) {
         angles.add((double) roundNumber(angle, 2));
 
+
         if (angles.size() == 3) {
             angle = roundNumber(averageAngle(), 2);
             double tan = Math.tan(Math.toRadians(Math.abs(angle)));
@@ -133,12 +138,23 @@ public class DalCalibrActivity extends Activity implements View.OnClickListener,
             task_data[0] = Math.abs(angle);
             if(angle ==0)
                 task_data[1] = 0;
-            else
-                task_data[1] = height/tan;
+            else {
+                if(calibrType.equals("calibr1"))
+                task_data[1] = height * tan;
+                else task_data[1] = height / tan;
+            }
             angles = new ArrayList<>();
 
         }
         return task_data;
+    }
+
+    public static Double calculateHeight(double angle, double height,String calibrType) {
+            double tan = Math.tan(Math.toRadians(Math.abs(angle)));
+                if(calibrType.equals("calibr1"))
+                    return  height * tan;
+                else return height / tan;
+
     }
 
     public double averageAngle() {
@@ -187,9 +203,14 @@ public class DalCalibrActivity extends Activity implements View.OnClickListener,
                 float[] values = getOrientation();
                 if (checkRotate(values[2])) {
                     Log.d("ff",""+values[1]);
-                    if (values[1] < 0)
+
+                    if (values[1] > 0 && calibrType.equals("calibr1") )
+                            task_data = calculateHeight(values[1], height);
+                    //else task_data = new double[]{0,0};
+                    if (values[1] < 0 && calibrType.equals("calibr2") )
                         task_data = calculateHeight(values[1], height);
-                    else task_data = calculateHeight(0, height);
+                    //else task_data = new double[]{0,0};
+
                     publishProgress("" + roundNumber(task_data[0], 2));
                 }
             }
@@ -208,10 +229,10 @@ public class DalCalibrActivity extends Activity implements View.OnClickListener,
             angleView.setText("" + doubles[0]);
 
             Intent intent = new Intent();
-            intent.putExtra("eyeLength",dialog.eyeLength);
-            intent.putExtra("eyeHeight",dialog.eyeHeight);
-            intent.putExtra("length", roundNumber(doubles[1], 2));
-            intent.putExtra("angle", doubles[0]);
+            intent.putExtra(calibrType+"eyeLength",dialog.eyeLength);
+            intent.putExtra(calibrType+"eyeHeight",dialog.eyeHeight);
+            intent.putExtra(calibrType+"value", roundNumber(doubles[1], 2));
+            intent.putExtra(calibrType+"angle", doubles[0]);
             setResult(RESULT_OK, intent);
 
             sp.play(sound, 1, 1, 0, 0, 1);
@@ -234,5 +255,19 @@ public class DalCalibrActivity extends Activity implements View.OnClickListener,
         number = Math.round(number * accurancy);
 
         return number / accurancy;
+    }
+
+
+    public void intiDialog(){
+
+        if(calibrType.equals("calibr1")){
+            TextView view = (TextView) findViewById(R.id.angle_title);
+            view.setText(R.string.angle_str2);
+        }
+        else{
+            TextView view = (TextView) findViewById(R.id.angle_title);
+            view.setText(R.string.angle_str);
+        }
+        angleView.refreshDrawableState();
     }
 }
