@@ -3,6 +3,8 @@
     <string name="action_settings">Settings</string>
     <string name="action_calibr1">Калібрування на вершину</string>
     <string name="action_calibr2">Калібрування на основу</string>
+    <string name="action_help">Правила вимiрювання</string>
+
     <string name="angle_str">Кут до землі</string>
     <string name="angle_str2">Кут на верршину</string>
     <string name="dialog_title">Відстань до рiвня очей</string>
@@ -18,4 +20,16 @@
     <string name="line4">тел.<u>0572-94-96-42</u></string>
     <string name="line5"><u>050-400-83-41</u></string>
     <string name="line6"><u>097-529-67-78</u></string>
+
+    <string name="calc_help1">1. Ввести вiдстань до рiвня очей</string>
+    <string name="calc_help2">2. Проводити замiр увздовж стрiлки, приклавши пристрiй до ока ребром</string>
+    <string name="calc_help3">3. Для отримання першого куту треба направити пристрiй до низу</string>
+    <string name="calc_help4">4. Для отримання другого куту треба направити пристрiй до гори</string>
+    <string name="calc_help5">5. Натиснути на екран пристрою, для отримання результату вимiрювання</string>
+
+    <string name="calib_help1">1. У правому верхньому кутку вибрати меню Калiбрування</string>
+    <string name="calib_help2">2. Шоб додати значення калiбровки, треба натиснути кнопку - Додати калiбрування,та виконувти наступнi кроки оисанны у пунктi вимiравння  </string>
+    <string name="calib_help3">3. Щоб убрати калiбрувальнi даннi, треба натиснути кнопку - Сбросити вимiрювання</string>
+
+
 </resources>

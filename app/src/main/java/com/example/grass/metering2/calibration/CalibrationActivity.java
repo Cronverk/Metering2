@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -52,7 +53,8 @@ public class CalibrationActivity extends Activity implements View.OnClickListene
         view.setAdapter(adapter);
         Button but  = (Button)findViewById(R.id.button4);
         but.setOnClickListener(this);
-
+        Button but2  = (Button)findViewById(R.id.button2);
+        but2.setOnClickListener(this);
 
     }
 
@@ -63,6 +65,13 @@ public class CalibrationActivity extends Activity implements View.OnClickListene
                 Intent intent = new Intent(this, DalCalibrActivity.class);
                 intent.putExtra("calibrType",calibrType);
                 startActivityForResult(intent,1);
+                break;
+            case R.id.button2:
+                SharedPreferences mSettings = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = mSettings.edit();
+                editor.clear();
+                editor.commit();
+                finish();
                 break;
         }
     }

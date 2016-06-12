@@ -20,7 +20,7 @@
         android:text="Висота"
         android:id="@+id/textView10"
         android:textSize="50dp"
-        android:layout_above="@+id/textView2"
+        android:layout_above="@+id/angleValue"
         android:layout_alignLeft="@+id/heightValue"
         android:layout_alignStart="@+id/heightValue" />
 
@@ -54,21 +54,10 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="00.00"
         android:id="@+id/angleValue"
-        android:textSize="140dp"
+        android:textSize="120sp"
         android:layout_below="@+id/angle_title"
         android:layout_alignLeft="@+id/layer"
         android:layout_alignStart="@+id/layer" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="o"
-        android:id="@+id/textView2"
-        android:textSize="35dp"
-        android:layout_alignTop="@+id/angleValue"
-        android:layout_toRightOf="@+id/angleValue"
-        android:layout_toEndOf="@+id/angleValue" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -96,7 +85,7 @@
         android:layout_centerHorizontal="true"
         android:weightSum="1"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="invisible">
 
         <EditText
             android:id="@+id/editOwnValue"

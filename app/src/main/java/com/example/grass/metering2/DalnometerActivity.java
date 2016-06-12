@@ -216,7 +216,7 @@ public class DalnometerActivity extends Activity implements View.OnClickListener
 
     }
 
-    public class MeteringTask extends AsyncTask<Double, String, double[]> {
+    public class MeteringTask extends AsyncTask<Double, Double, double[]> {
 
         private boolean runFlag = true;
 
@@ -249,14 +249,14 @@ public class DalnometerActivity extends Activity implements View.OnClickListener
                     if (values[1] < 0)
                         task_data = calculateHeight(values[1], height);
                     else task_data = calculateHeight(0, height);
-                    publishProgress("" + roundNumber(task_data[0], 2));
+                    publishProgress(task_data[0]);
                 }
             }
             return task_data;
         }
 
-        protected void onProgressUpdate(String... data) {
-            angleView.setText(data[0]);
+        protected void onProgressUpdate(Double... data) {
+            angleView.setText(doubleToDegree(data[0]));
         }
 
         @Override
@@ -268,14 +268,20 @@ public class DalnometerActivity extends Activity implements View.OnClickListener
             }
 
             heightView.setText("" + roundNumber(doubles[1]+accurate, 1));
-            angleView.setText("" + doubles[0]);
+            angleView.setText("" + doubleToDegree(doubles[0]));
 
             sp.play(sound, 1, 1, 0, 0, 1);
             sendText(""+roundNumber(doubles[1]+accurate, 1));
             enableButtons(true);
         }
     }
-
+    public static String doubleToDegree(double value){
+        int degree = (int) value;
+        double rawMinute = Math.abs((value % 1) * 60);
+        int minute = (int) rawMinute;
+        int second = (int) Math.round((rawMinute % 1) * 60);
+        return String.format("%d° %d′ %d″", degree,minute,second);
+    }
     public void stopTask() {
         task.stopTask();
     }

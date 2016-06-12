@@ -281,7 +281,7 @@ public class MeteringActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-    public class AngleTask extends AsyncTask<Double,String,Double>{
+    public class AngleTask extends AsyncTask<Double,Double,Double>{
 
         private boolean runFlag =true;
         private double num = 0;
@@ -323,19 +323,19 @@ public class MeteringActivity extends AppCompatActivity implements View.OnClickL
                         angles = new ArrayList<>();
                     }
                 }
-                publishProgress("" + Math.abs(roundNumber(angle, 2)));
+                publishProgress(angle);
             }
             return 3.0;
         }
-        protected void onProgressUpdate(String... data) {
+        protected void onProgressUpdate(Double... data) {
             switch ((int)taskCounter){
                 case 1:
-                    bettaView.setText(data[0]);
-                    betta = Double.parseDouble(data[0]);
+                    bettaView.setText(doubleToDegree(Math.abs(data[0])));
+                    betta = data[0];
                     break;
                 case 2:
-                    alphaView.setText(data[0]);
-                    alpha = Double.parseDouble(data[0]);
+                    alphaView.setText(doubleToDegree(Math.abs(data[0])));
+                    alpha = data[0];
                     break;
             }
         }
@@ -353,6 +353,15 @@ public class MeteringActivity extends AppCompatActivity implements View.OnClickL
             enableButtons(true);
         }
     }
+
+    public static String doubleToDegree(double value){
+        int degree = (int) value;
+        double rawMinute = Math.abs((value % 1) * 60);
+        int minute = (int) rawMinute;
+        int second = (int) Math.round((rawMinute % 1) * 60);
+        return String.format("%d° %d′ %d″", degree,minute,second);
+    }
+
     public void resetActivity(){
         alphaView.setText("00.00");
         bettaView.setText("00.00");
@@ -419,9 +428,11 @@ public class MeteringActivity extends AppCompatActivity implements View.OnClickL
             intent.putExtra("calibrType","calibr1");
             startActivity(intent);
             return true;
-
-
-
+        }
+        if(id == R.id.action_help){
+            stopTask();
+            Intent intent = new Intent(this, HelpActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

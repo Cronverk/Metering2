@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/heightValue"
-        android:textSize="130dp"
+        android:textSize="100sp"
         android:text="00.00"
         android:layout_below="@+id/textView10"
         android:layout_toRightOf="@+id/angle_title"
@@ -59,7 +59,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="00.00"
         android:id="@+id/alphaValue"
-        android:textSize="70dp"
+        android:textSize="50sp"
         android:layout_below="@+id/angle_title"
         android:layout_alignLeft="@+id/angle_title"
         android:layout_alignStart="@+id/angle_title" />
@@ -68,24 +68,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="o"
-        android:id="@+id/textView2"
-        android:textSize="25dp"
-        android:layout_alignTop="@+id/alphaValue"
-        android:layout_toRightOf="@+id/alphaValue"
-        android:layout_toEndOf="@+id/alphaValue" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="m"
         android:id="@+id/textView3"
         android:textSize="70dp"
-        android:layout_below="@+id/textView7"
         android:layout_alignRight="@+id/heightValue"
         android:layout_alignEnd="@+id/heightValue"
-        android:visibility="gone" />" />
+        android:visibility="gone"
+        android:layout_alignTop="@+id/bettaValue" />" />
 
     <Button
         android:layout_width="match_parent"
@@ -139,23 +128,11 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="00.00"
-        android:textSize="70dp"
+        android:textSize="50sp"
         android:layout_below="@+id/textView4"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="10dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="o"
-        android:id="@+id/textView7"
-        android:textSize="25dp"
-        android:layout_alignTop="@+id/bettaValue"
-        android:layout_toRightOf="@+id/bettaValue"
-        android:layout_toEndOf="@+id/bettaValue" />
-
 
 
 </RelativeLayout>
