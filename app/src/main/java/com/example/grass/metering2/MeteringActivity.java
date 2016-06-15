@@ -331,11 +331,11 @@ public class MeteringActivity extends AppCompatActivity implements View.OnClickL
             switch ((int)taskCounter){
                 case 1:
                     bettaView.setText(doubleToDegree(Math.abs(data[0])));
-                    betta = data[0];
+                    betta = Math.abs(data[0]);
                     break;
                 case 2:
                     alphaView.setText(doubleToDegree(Math.abs(data[0])));
-                    alpha = data[0];
+                    alpha = Math.abs(data[0]);
                     break;
             }
         }
